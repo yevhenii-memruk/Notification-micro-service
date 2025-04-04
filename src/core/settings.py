@@ -28,14 +28,24 @@ class Settings(BaseSettings):
     MONGODB_USERNAME: str
     MONGODB_PASSWORD: str
     MONGODB_ROOT_PASSWORD: str
+    MONGODB_HOST: str
+    MONGODB_PORT: str
     MONGODB_DATABASE: str
-    MONGODB_URI: str
+    MONGODB_ROOT_USERNAME: str
 
     # AWS
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
     AWS_REGION: str
     EMAIL_SENDER: str
+
+    @property
+    def mongodb_uri(self) -> str:
+        return (
+            f"mongodb://"
+            f"{self.MONGODB_USERNAME}:{self.MONGODB_PASSWORD}@"
+            f"{self.MONGODB_HOST}:{self.MONGODB_PORT}/{self.MONGODB_DATABASE}"
+        )
 
 
 settings = Settings()

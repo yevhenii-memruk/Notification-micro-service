@@ -23,7 +23,6 @@ FROM python:3.11-slim as final
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH=/usr/local/lib/python3.11/site-packages/
 
 # Set up a non-root user for better security
 RUN useradd -m appuser
@@ -32,8 +31,6 @@ WORKDIR /app
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin /usr/local/bin
-
-COPY . .
 
 RUN chown -R appuser:appuser /app
 
