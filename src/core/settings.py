@@ -20,9 +20,10 @@ class Settings(BaseSettings):
     # RabbitMQ
     RABBITMQ_USER: str
     RABBITMQ_PASSWORD: str
-    RABBITMQ_URI: str
     RABBITMQ_QUEUE: str = "reset-password-stream"
     RABBITMQ_RETRY_LIMIT: int = 5
+    RABBITMQ_HOST: str
+    RABBITMQ_PORT: str
 
     # MongoDB
     MONGODB_USERNAME: str
@@ -45,6 +46,14 @@ class Settings(BaseSettings):
             f"mongodb://"
             f"{self.MONGODB_USERNAME}:{self.MONGODB_PASSWORD}@"
             f"{self.MONGODB_HOST}:{self.MONGODB_PORT}/{self.MONGODB_DATABASE}"
+        )
+
+    @property
+    def rabbitmq_uri(self) -> str:
+        return (
+            f"amqp://"
+            f"{self.RABBITMQ_USER}:{self.RABBITMQ_PASSWORD}@"
+            f"{self.RABBITMQ_HOST}:{self.RABBITMQ_PORT}/"
         )
 
 
