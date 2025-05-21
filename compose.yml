@@ -4,14 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - rabbitmq
-      - mongodb
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
     volumes:
       - .:/app
     networks:
       - notification-network
 
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     restart: always
     ports:
@@ -21,6 +24,11 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - notification-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 6s
+      timeout: 3s
+      retries: 5
 
   mongodb:
     image: bitnami/mongodb:latest
